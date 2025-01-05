@@ -2,7 +2,7 @@ package com.example.thebookofbooks.model
 
 data class VolumeInfo(
     val authors: List<String>,
-    val averageRating: Int,
+    val averageRating: Double,
     val categories: List<String>,
     val contentVersion: String,
     val description: String,
