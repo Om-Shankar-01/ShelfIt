@@ -1,12 +1,12 @@
 package com.example.thebookofbooks.ui
 
+import com.example.thebookofbooks.model.BookDetailsItem
 import com.example.thebookofbooks.model.BookResponse
 import com.example.thebookofbooks.model.Item
 
 sealed interface ResultScreenUiState {
     data class Success (
         val response : BookResponse,
-        val api_call_count : Int,
         val isHomeScreen : Boolean = true
     ) : ResultScreenUiState
     data class Error (
@@ -23,7 +23,7 @@ sealed interface ResultScreenUiState {
 
 sealed interface DetailsScreenUiState {
     data class Success (
-        val bookDetails : Item,
+        val bookDetails : BookDetailsItem,
         val isHomeScreen : Boolean = false
     ) : DetailsScreenUiState
     data class Error (

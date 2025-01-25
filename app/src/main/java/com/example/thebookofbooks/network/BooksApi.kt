@@ -1,5 +1,6 @@
 package com.example.thebookofbooks.network
 
+import com.example.thebookofbooks.model.BookDetailsItem
 import com.example.thebookofbooks.model.BookResponse
 import com.example.thebookofbooks.model.Item
 import retrofit2.http.GET
@@ -17,5 +18,5 @@ interface BooksApi {
     suspend fun getBook(
         @Path("id") id: String,
         @Query("key") key: String
-    ): Item
+    ): BookDetailsItem
 }

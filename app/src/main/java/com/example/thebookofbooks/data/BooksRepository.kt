@@ -2,13 +2,14 @@ package com.example.thebookofbooks.data
 
 import com.example.thebookofbooks.BuildConfig
 import com.example.thebookofbooks.R
+import com.example.thebookofbooks.model.BookDetailsItem
 import com.example.thebookofbooks.model.BookResponse
 import com.example.thebookofbooks.model.Item
 import com.example.thebookofbooks.network.BooksApi
 
 interface BooksRepository {
     suspend fun getBooksList(query: String): BookResponse
-    suspend fun getBookDetails(id: String) : Item
+    suspend fun getBookDetails(id: String) : BookDetailsItem
 }
 
 class NetworkBooksRepository(
@@ -17,5 +18,5 @@ class NetworkBooksRepository(
     private val apiKey = BuildConfig.apiKey
     override suspend fun getBooksList(query: String): BookResponse = booksApi.searchBooks(query, apiKey)
 
-    override suspend fun getBookDetails(id: String): Item = booksApi.getBook(id, apiKey)
+    override suspend fun getBookDetails(id: String): BookDetailsItem = booksApi.getBook(id, apiKey)
 }

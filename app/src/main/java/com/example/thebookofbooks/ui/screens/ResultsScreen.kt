@@ -58,7 +58,6 @@ fun ResultsScreen(
         )
         is ResultScreenUiState.Success -> ResultsGridScreen(
             bookResponse = resultScreenUiState.response,
-            api_call_count = resultScreenUiState.api_call_count,
             updateBookId = updateBookId,
             onImageClicked = onImageClicked,
             modifier = Modifier
@@ -72,11 +71,8 @@ fun ResultsGridScreen(
     bookResponse: BookResponse,
     updateBookId: (String) -> Unit,
     onImageClicked: () -> Unit,
-    modifier: Modifier = Modifier,
-    api_call_count: Int
+    modifier: Modifier = Modifier
 ) {
-    Text(text = api_call_count.toString()) // to remove
-    Spacer(modifier = Modifier.size(16.dp)) // to remove
     LazyVerticalGrid(
         columns = GridCells.Adaptive(150.dp),
         contentPadding = PaddingValues(0.dp),
@@ -259,7 +255,6 @@ fun ResultsGridScreenPreview() {
             onImageClicked = {},
             updateBookId = {},
             modifier = Modifier,
-            api_call_count = 0
         )
 
     }

@@ -11,6 +11,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import coil.network.HttpException
 import com.example.thebookofbooks.BooksApplication
+import com.example.thebookofbooks.model.BookDetailsItem
 import com.example.thebookofbooks.model.Item
 import com.example.thebookofbooks.ui.DetailsScreenUiState
 import com.example.thebookofbooks.ui.ResultScreenUiState
@@ -26,7 +27,6 @@ class BooksViewModel(
 ) : ViewModel() {
     var query by mutableStateOf("")
     var bookId by mutableStateOf("")
-    var api_call_count by mutableStateOf(0)
 
     private val _resultScreenUiState = MutableStateFlow<ResultScreenUiState>(ResultScreenUiState.Loading())
     val resultScreenUiState = _resultScreenUiState.asStateFlow()
@@ -42,7 +42,6 @@ class BooksViewModel(
     private var searchJob: Job? = null
     fun fetchResponse () {
         searchJob?.cancel()
-        api_call_count++
         searchJob = viewModelScope.launch {
             _resultScreenUiState.value = ResultScreenUiState.Loading()
             try {
@@ -51,7 +50,7 @@ class BooksViewModel(
                 _resultScreenUiState.value = if (response.items.isNullOrEmpty()) {
                     ResultScreenUiState.Empty()
                 } else {
-                    ResultScreenUiState.Success(response, api_call_count)
+                    ResultScreenUiState.Success(response)
                 }
             } catch (e : HttpException) {
                 _resultScreenUiState.value = ResultScreenUiState.Error(e.message)
@@ -64,11 +63,10 @@ class BooksViewModel(
     }
 
     fun fetchBookDetails (id : String) {
-        api_call_count++
         viewModelScope.launch {
             _detailsScreenUiState.value = DetailsScreenUiState.Loading()
             try {
-                val bookDetails : Item = booksRepository.getBookDetails(id)
+                val bookDetails : BookDetailsItem = booksRepository.getBookDetails(id)
                 _detailsScreenUiState.value = DetailsScreenUiState.Success(bookDetails)
             } catch (e : HttpException) {
                 _detailsScreenUiState.value = DetailsScreenUiState.Error(e.message)
