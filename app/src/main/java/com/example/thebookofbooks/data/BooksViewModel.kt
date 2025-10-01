@@ -26,7 +26,9 @@ class BooksViewModel(
 ) : ViewModel() {
     /*** Constants & Query variables ***/
     private val pageSize = 10
-    var query by mutableStateOf("")
+    var searchQuery by mutableStateOf("")
+    var displayedQuery by mutableStateOf("")
+        private set
     var bookId by mutableStateOf("")
 
     /** Filter variables ***/
@@ -54,12 +56,13 @@ class BooksViewModel(
 
 
     /*** Function to update query term ***/
-    fun updateQuery(newQuery: String) {
-        query = newQuery
+    fun updateSearchQuery(newQuery: String) {
+        searchQuery = newQuery
     }
 
     /*** Functions to enable pagination ***/
     fun executeSearch() {
+        displayedQuery = searchQuery
         currentStartIndex = 0
         fetchBooksForCurrentPage()
     }
@@ -88,7 +91,7 @@ class BooksViewModel(
             try {
                 delay(500)
                 val response =
-                    booksRepository.getBooksList(query, orderBy, printType, currentStartIndex)
+                    booksRepository.getBooksList(searchQuery, orderBy, printType, currentStartIndex)
                 totalItems = response.totalItems
                 _resultScreenUiState.value = if (response.items.isNullOrEmpty()) {
                     ResultScreenUiState.Empty()

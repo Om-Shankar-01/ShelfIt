@@ -1,5 +1,8 @@
 package com.example.thebookofbooks.ui
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -41,7 +44,7 @@ fun BooksApp(
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val booksViewModel: BooksViewModel = viewModel(factory = BooksViewModel.Factory)
-    val query = booksViewModel.query
+    val query = booksViewModel.displayedQuery
 
     val currentScreenRoute = backStackEntry?.destination?.route ?: BookScreen.START.name
 
@@ -70,7 +73,31 @@ fun BooksApp(
             NavHost(
                 navController = navController,
                 startDestination = BookScreen.START.name,
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.padding(innerPadding),
+                enterTransition = {
+                    slideInHorizontally(
+                        initialOffsetX = { fullWidth -> fullWidth },
+                        animationSpec = tween(durationMillis = 500)
+                    )
+                },
+                exitTransition = {
+                    slideOutHorizontally(
+                        targetOffsetX = { fullWidth -> -fullWidth },
+                        animationSpec = tween(durationMillis = 500)
+                    )
+                },
+                popEnterTransition = {
+                    slideInHorizontally(
+                        initialOffsetX = { fullWidth -> -fullWidth },
+                        animationSpec = tween(durationMillis = 500)
+                    )
+                },
+                popExitTransition = {
+                    slideOutHorizontally(
+                        targetOffsetX = { fullWidth -> fullWidth },
+                        animationSpec = tween(durationMillis = 500)
+                    )
+                }
             ) {
                 composable(route = BookScreen.START.name) {
                     BooksStartScreen(
@@ -87,8 +114,12 @@ fun BooksApp(
                         booksViewModel = booksViewModel,
                         retryAction = { booksViewModel.fetchBooksForCurrentPage() },
                         onImageClicked = {
-                            navController.navigate(BookScreen.DETAILS.name)
+                            navController.navigate(route = BookScreen.DETAILS.name)
                             booksViewModel.onImageClicked()
+                        },
+                        onNewSearch = {
+                            booksViewModel.executeSearch()
+                            navController.navigate(route = BookScreen.RESULT.name)
                         }
                     )
                 }

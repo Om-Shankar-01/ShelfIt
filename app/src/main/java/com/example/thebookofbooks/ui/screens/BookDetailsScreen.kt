@@ -203,7 +203,7 @@ fun BookCover(bookDetails: BookDetailsItem) {
             modifier = Modifier
                 .clip(RoundedCornerShape(16.dp))
                 .fillMaxWidth()
-                .padding(2.dp)
+//                .padding(2.dp)
         )
     }
 }

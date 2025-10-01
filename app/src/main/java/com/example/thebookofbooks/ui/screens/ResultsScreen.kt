@@ -1,6 +1,5 @@
 package com.example.thebookofbooks.ui.screens
 
-import android.widget.Toolbar
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,8 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.automirrored.filled.ArrowRight
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -63,7 +60,8 @@ import com.example.thebookofbooks.ui.theme.baskervilleFamily
 fun ResultsScreen(
     booksViewModel: BooksViewModel,
     retryAction: () -> Unit,
-    onImageClicked: () -> Unit
+    onImageClicked: () -> Unit,
+    onNewSearch: () -> Unit,
 ) {
     val resultScreenUiState by booksViewModel.resultScreenUiState.collectAsState()
 
@@ -75,9 +73,9 @@ fun ResultsScreen(
         Spacer(modifier = Modifier.size(16.dp))
         /*** Search Bar ***/
         SearchBar(
-            query = booksViewModel.query,
-            onTextFieldChanged = { booksViewModel.updateQuery(it) },
-            onSearchButtonClicked = { booksViewModel.executeSearch() },
+            query = booksViewModel.searchQuery,
+            onTextFieldChanged = { booksViewModel.updateSearchQuery(it) },
+            onSearchButtonClicked = { onNewSearch() },
         )
         Spacer(modifier = Modifier.size(16.dp))
         Box(modifier = Modifier.weight(1f)) {
