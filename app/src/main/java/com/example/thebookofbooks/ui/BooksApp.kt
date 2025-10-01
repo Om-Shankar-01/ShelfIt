@@ -77,7 +77,7 @@ fun BooksApp(
                         booksViewModel = booksViewModel,
                         onSearchButtonClicked = {
                             navController.navigate(BookScreen.RESULT.name)
-                            booksViewModel.fetchBooksForCurrentPage()
+                            booksViewModel.executeSearch()
                         }
                     )
                 }

@@ -13,16 +13,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.ArrowRight
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -72,8 +76,8 @@ fun ResultsScreen(
         /*** Search Bar ***/
         SearchBar(
             query = booksViewModel.query,
-            onTextFieldChanged = { booksViewModel.updateBookId(it) },
-            onSearchButtonClicked = { booksViewModel.fetchBooksForCurrentPage() },
+            onTextFieldChanged = { booksViewModel.updateQuery(it) },
+            onSearchButtonClicked = { booksViewModel.executeSearch() },
         )
         Spacer(modifier = Modifier.size(16.dp))
         Box(modifier = Modifier.weight(1f)) {
@@ -95,9 +99,15 @@ fun ResultsScreen(
                 is ResultScreenUiState.Empty -> EmptyScreen()
             }
 
-            if (resultScreenUiState is ResultScreenUiState.Success) {
-
-            }
+        }
+        if (resultScreenUiState is ResultScreenUiState.Success) {
+            PaginationControls(
+                canNavigateNext = booksViewModel.canNavigateNext,
+                canNavigatePrevious = booksViewModel.canNavigatePrevious,
+                onNextClicked = { booksViewModel.nextPage() },
+                onPreviousClicked = { booksViewModel.previousPage() },
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }
@@ -111,21 +121,38 @@ fun PaginationControls(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier.padding(8.dp)
+        modifier = modifier.padding(vertical = 8.dp)
     ) {
-        TextButton(onClick = onPreviousClicked, enabled = canNavigatePrevious) {
+        TextButton(
+            onClick = onPreviousClicked,
+            enabled = canNavigatePrevious,
+            colors = ButtonDefaults.textButtonColors(
+                containerColor = MaterialTheme.colorScheme.secondary,
+                contentColor = MaterialTheme.colorScheme.onSecondary
+            )
+        ) {
             Icon(
                 Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = stringResource(R.string.back_button)
             )
+            Spacer(modifier = Modifier.width(4.dp))
             Text(text = "Previous")
         }
-        TextButton(onClick = onNextClicked, enabled = canNavigateNext) {
+        Spacer(modifier = Modifier.weight(1f))
+        TextButton(
+            onClick = onNextClicked,
+            enabled = canNavigateNext,
+            colors = ButtonDefaults.textButtonColors(
+                containerColor = MaterialTheme.colorScheme.secondary,
+                contentColor = MaterialTheme.colorScheme.onSecondary
+            )
+        ) {
+            Text(text = "Next")
+            Spacer(modifier = Modifier.width(4.dp))
             Icon(
-                Icons.AutoMirrored.Filled.ArrowRight,
+                Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = stringResource(R.string.next_button)
             )
-            Text(text = "Next")
         }
     }
 }
@@ -138,7 +165,7 @@ fun ResultsGridScreen(
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(150.dp),
+        columns = GridCells.Adaptive(200.dp),
         contentPadding = PaddingValues(0.dp),
         modifier = Modifier.fillMaxSize()
     ) {

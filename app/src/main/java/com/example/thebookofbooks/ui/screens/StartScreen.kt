@@ -97,7 +97,10 @@ fun BooksStartScreen(
         Spacer(modifier = Modifier.size(16.dp))
 
         /*** Row for Filter Options ***/
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             // Options for Order By Type
             ExposedDropdownMenuBox(
                 expanded = orderByTypeExpanded,

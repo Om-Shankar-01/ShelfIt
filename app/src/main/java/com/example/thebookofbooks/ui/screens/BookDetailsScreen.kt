@@ -39,6 +39,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -55,6 +56,7 @@ import com.example.thebookofbooks.ui.DetailsScreenUiState
 import com.example.thebookofbooks.ui.theme.TheBookOfBooksTheme
 import com.example.thebookofbooks.ui.theme.baskervilleFamily
 import com.example.thebookofbooks.ui.theme.prataFamily
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
@@ -356,7 +358,7 @@ fun InfoPill(
             .background(color = MaterialTheme.colorScheme.tertiary)
     ) {
         Text(
-            text = text,
+            text = text.trim().lowercase().replace('_', ' '),
             fontSize = 20.sp,
             fontFamily = prataFamily,
             fontWeight = FontWeight.Bold,

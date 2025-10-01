@@ -71,7 +71,7 @@ class BooksViewModel(
         }
     }
 
-    fun previousPage () {
+    fun previousPage() {
         if (canNavigatePrevious) {
             currentStartIndex -= pageSize
             fetchBooksForCurrentPage()
@@ -87,7 +87,9 @@ class BooksViewModel(
             _resultScreenUiState.value = ResultScreenUiState.Loading()
             try {
                 delay(500)
-                val response = booksRepository.getBooksList(query, orderBy, printType, currentStartIndex)
+                val response =
+                    booksRepository.getBooksList(query, orderBy, printType, currentStartIndex)
+                totalItems = response.totalItems
                 _resultScreenUiState.value = if (response.items.isNullOrEmpty()) {
                     ResultScreenUiState.Empty()
                 } else {
