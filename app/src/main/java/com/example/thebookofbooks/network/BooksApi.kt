@@ -11,7 +11,10 @@ interface BooksApi {
     @GET("volumes")
     suspend fun searchBooks(
         @Query("q") query: String,
-        @Query("api_key") key: String
+        @Query("api_key") key: String,
+        @Query("orderBy") orderBy: String?,
+        @Query("printType") printType: String?,
+        @Query("startIndex") startIndex: Int
     ): BookResponse
 
     @GET("volumes/{id}")

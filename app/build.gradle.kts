@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.example.thebookofbooks"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.thebookofbooks"
         minSdk = 31
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.compose.material3)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -72,8 +73,11 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    implementation("androidx.compose.material3:material3-window-size-class")
+
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
 
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     implementation("io.coil-kt:coil-compose:2.4.0")

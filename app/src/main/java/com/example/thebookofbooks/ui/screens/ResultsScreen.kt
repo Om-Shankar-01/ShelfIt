@@ -1,9 +1,12 @@
 package com.example.thebookofbooks.ui.screens
 
+import android.widget.Toolbar
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,23 +16,31 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowRight
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.thebookofbooks.R
@@ -39,30 +50,83 @@ import com.example.thebookofbooks.model.ImageLinks
 import com.example.thebookofbooks.model.Item
 import com.example.thebookofbooks.model.VolumeInfo
 import com.example.thebookofbooks.ui.ResultScreenUiState
+import com.example.thebookofbooks.ui.screens.common.SearchBar
 import com.example.thebookofbooks.ui.theme.TheBookOfBooksTheme
 import com.example.thebookofbooks.ui.theme.baskervilleFamily
 
 
 @Composable
 fun ResultsScreen(
-    resultScreenUiState: ResultScreenUiState,
-    retryAction : () -> Unit,
-    updateBookId: (String) -> Unit,
+    booksViewModel: BooksViewModel,
+    retryAction: () -> Unit,
     onImageClicked: () -> Unit
 ) {
-    when (resultScreenUiState) {
-        is ResultScreenUiState.Loading -> LoadingScreen()
-        is ResultScreenUiState.Error -> ErrorScreen(
-            retryAction = retryAction,
-            errorMessage = resultScreenUiState.errorMessage
+    val resultScreenUiState by booksViewModel.resultScreenUiState.collectAsState()
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp)
+    ) {
+        Spacer(modifier = Modifier.size(16.dp))
+        /*** Search Bar ***/
+        SearchBar(
+            query = booksViewModel.query,
+            onTextFieldChanged = { booksViewModel.updateBookId(it) },
+            onSearchButtonClicked = { booksViewModel.fetchBooksForCurrentPage() },
         )
-        is ResultScreenUiState.Success -> ResultsGridScreen(
-            bookResponse = resultScreenUiState.response,
-            updateBookId = updateBookId,
-            onImageClicked = onImageClicked,
-            modifier = Modifier
-        )
-        is ResultScreenUiState.Empty -> EmptyScreen()
+        Spacer(modifier = Modifier.size(16.dp))
+        Box(modifier = Modifier.weight(1f)) {
+            when (val uiState = resultScreenUiState) {
+                is ResultScreenUiState.Success -> ResultsGridScreen(
+                    bookResponse = uiState.response,
+                    updateBookId = { booksViewModel.updateBookId(it) },
+                    onImageClicked = onImageClicked,
+                    modifier = Modifier
+                )
+
+                is ResultScreenUiState.Loading -> LoadingScreen()
+                /*** Error Screen ***/
+                is ResultScreenUiState.Error -> ErrorScreen(
+                    retryAction = retryAction,
+                    errorMessage = uiState.errorMessage
+                )
+
+                is ResultScreenUiState.Empty -> EmptyScreen()
+            }
+
+            if (resultScreenUiState is ResultScreenUiState.Success) {
+
+            }
+        }
+    }
+}
+
+@Composable
+fun PaginationControls(
+    canNavigateNext: Boolean,
+    canNavigatePrevious: Boolean,
+    onNextClicked: () -> Unit,
+    onPreviousClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.padding(8.dp)
+    ) {
+        TextButton(onClick = onPreviousClicked, enabled = canNavigatePrevious) {
+            Icon(
+                Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = stringResource(R.string.back_button)
+            )
+            Text(text = "Previous")
+        }
+        TextButton(onClick = onNextClicked, enabled = canNavigateNext) {
+            Icon(
+                Icons.AutoMirrored.Filled.ArrowRight,
+                contentDescription = stringResource(R.string.next_button)
+            )
+            Text(text = "Next")
+        }
     }
 }
 
@@ -95,7 +159,7 @@ fun ResultsGridScreen(
 @Composable
 fun BookPhotoCard(
     bookInfo: VolumeInfo,
-    updateBookId : (String) -> Unit,
+    updateBookId: (String) -> Unit,
     onImageClicked: () -> Unit,
     bookId: String,
     modifier: Modifier,
@@ -251,7 +315,8 @@ fun ResultsGridScreenPreview() {
                 )
             ), 4
         )
-        ResultsGridScreen(bookResponse = mockData,
+        ResultsGridScreen(
+            bookResponse = mockData,
             onImageClicked = {},
             updateBookId = {},
             modifier = Modifier,

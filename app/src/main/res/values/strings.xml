@@ -8,4 +8,7 @@
     <string name="error_screen_retry_button">Retry</string>
     <string name="search_button_label">Search</string>
     <string name="search_field_label">Search for a book</string>
+    <string name="back_button">Go Back</string>
+    <string name="published_date_text">Published Date</string>
+    <string name="next_button">Go Next</string>
 </resources>
