@@ -1,5 +1,6 @@
 package com.example.thebookofbooks.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -94,7 +95,7 @@ fun ResultsScreen(
                     errorMessage = uiState.errorMessage
                 )
 
-                is ResultScreenUiState.Empty -> EmptyScreen()
+                is ResultScreenUiState.Empty -> EmptyScreen(retryAction = retryAction)
             }
 
         }
@@ -163,7 +164,7 @@ fun ResultsGridScreen(
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(200.dp),
+        columns = GridCells.Adaptive(160.dp),
         contentPadding = PaddingValues(0.dp),
         modifier = Modifier.fillMaxSize()
     ) {
@@ -193,7 +194,7 @@ fun BookPhotoCard(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        val thumbnailUrl: String = bookInfo.imageLinks.thumbnail.replace("http", "https")
+        val thumbnailUrl: String? = bookInfo.imageLinks?.thumbnail?.replace("http", "https")
         Card(
             elevation = CardDefaults.cardElevation(4.dp),
             modifier = modifier

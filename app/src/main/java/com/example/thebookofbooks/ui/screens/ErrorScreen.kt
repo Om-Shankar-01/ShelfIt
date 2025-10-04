@@ -23,11 +23,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.thebookofbooks.R
 import com.example.thebookofbooks.ui.theme.TheBookOfBooksTheme
+import com.example.thebookofbooks.ui.theme.baskervilleFamily
+import com.example.thebookofbooks.ui.theme.prataFamily
 
 
 @Composable
 fun ErrorScreen (
-    retryAction: () -> Unit = {},
+    retryAction: () -> Unit,
     errorMessage : String?,
     modifier: Modifier = Modifier
 ) {
@@ -36,7 +38,7 @@ fun ErrorScreen (
         horizontalAlignment = Alignment.Start,
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 32.dp)
+            .padding(horizontal = 20.dp)
     ) {
         item {
             Icon(
@@ -44,37 +46,54 @@ fun ErrorScreen (
                 contentDescription = stringResource(id = R.string.warning_icon_desc),
                 modifier = Modifier.size(80.dp)
             )
+        }
+        item {
             Spacer(modifier = Modifier.height(16.dp))
+        }
+        item {
             Text(
                 text = stringResource(id = R.string.error_screen_heading_text),
                 fontWeight = FontWeight.SemiBold,
                 style = MaterialTheme.typography.displaySmall,
-                // textAlign = TextAlign.Justify
+                fontFamily = prataFamily
             )
-            Spacer(modifier = Modifier.height(16.dp))
+        }
+        item {
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+        item {
             Text(
                 text = stringResource(id = R.string.error_screen_subheading_text),
                 style = MaterialTheme.typography.bodyLarge.copy(
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.75f)
                 ),
-                // textAlign = TextAlign.Justify
             )
-            Spacer(modifier = Modifier.height(16.dp))
+        }
+        item {
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+        item {
             if (errorMessage != null) {
                 Text(
                     text = errorMessage,
                     style = MaterialTheme.typography.bodyLarge.copy(
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.75f)
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     ),
-                    // textAlign = TextAlign.Justify
+                    fontFamily = baskervilleFamily,
+                    fontWeight = FontWeight.Bold
                 )
             }
+        }
+        item {
             Spacer(modifier = Modifier.height(16.dp))
+        }
+        item {
             Button(onClick = retryAction, contentPadding = PaddingValues(4.dp)) {
                 Text(
                     text = stringResource(id = R.string.error_screen_retry_button),
                     style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.SemiBold,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = baskervilleFamily,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
                 )
             }
@@ -86,6 +105,6 @@ fun ErrorScreen (
 @Composable
 fun ErrorScreenPreview () {
     TheBookOfBooksTheme {
-        ErrorScreen(errorMessage = "Error 404")
+        ErrorScreen(errorMessage = "Error 404", retryAction = {})
     }
 }

@@ -127,7 +127,7 @@ fun BooksApp(
                 composable(route = BookScreen.DETAILS.name) { backStackEntry ->
                     val detailsScreenUiState =
                         booksViewModel.detailsScreenUiState.collectAsState().value
-                    BookDetailsScreen(detailsScreenUiState)
+                    BookDetailsScreen(detailsScreenUiState, retryAction = { booksViewModel.fetchBooksForCurrentPage() })
                 }
             }
         }

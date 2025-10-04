@@ -1,7 +1,16 @@
 package com.example.thebookofbooks.ui.screens
 
 import android.app.Activity
-import android.icu.text.IDNA
+import android.text.Html
+import android.text.Spanned
+import android.text.style.BackgroundColorSpan
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
+import android.text.style.StrikethroughSpan
+import android.text.style.StyleSpan
+import android.text.style.URLSpan
+import android.text.style.UnderlineSpan
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,13 +18,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,15 +40,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.toLowerCase
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -56,7 +69,7 @@ import com.example.thebookofbooks.ui.DetailsScreenUiState
 import com.example.thebookofbooks.ui.theme.TheBookOfBooksTheme
 import com.example.thebookofbooks.ui.theme.baskervilleFamily
 import com.example.thebookofbooks.ui.theme.prataFamily
-import java.util.Locale
+
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
@@ -109,15 +122,23 @@ fun BookDetailsTabletLayout(bookDetails: BookDetailsItem) {
             item { BookAuthorList(bookDetails) }
             item {
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    CategoriesCard(bookDetails, modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(1f))
-                    Column (verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.weight(0.6f)) {
+                    CategoriesCard(
+                        bookDetails, modifier = Modifier
+                            .fillMaxHeight()
+                            .weight(1f)
+                    )
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.weight(0.6f)
+                    ) {
                         InfoPill(
                             bookDetails.volumeInfo.maturityRating,
                             modifier = Modifier.fillMaxWidth()
                         )
-                        InfoPillAlt(bookDetails.volumeInfo.language, modifier = Modifier.fillMaxWidth())
+                        InfoPillAlt(
+                            bookDetails.volumeInfo.language,
+                            modifier = Modifier.fillMaxWidth()
+                        )
                     }
                 }
             }
@@ -154,7 +175,7 @@ fun BookDetailsPortraitLayout(bookDetails: BookDetailsItem) {
         }
         item { CategoriesCard(bookDetails, modifier = Modifier.fillMaxWidth()) }
         item {
-            Row (horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 InfoPillAlt(bookDetails.volumeInfo.language, modifier = Modifier.weight(1f))
                 InfoPill(
                     bookDetails.volumeInfo.maturityRating,
@@ -181,10 +202,10 @@ fun BookTitle(bookDetails: BookDetailsItem) {
 @Composable
 fun BookCover(bookDetails: BookDetailsItem) {
     val imageUrl: String? =
-        if (bookDetails.volumeInfo.imageLinks.large != null) bookDetails.volumeInfo.imageLinks.large
-        else if (bookDetails.volumeInfo.imageLinks.medium != null) bookDetails.volumeInfo.imageLinks.medium
-        else if (bookDetails.volumeInfo.imageLinks.small != null) bookDetails.volumeInfo.imageLinks.small
-        else bookDetails.volumeInfo.imageLinks.thumbnail
+        if (bookDetails.volumeInfo.imageLinks?.large != null) bookDetails.volumeInfo.imageLinks.large
+        else if (bookDetails.volumeInfo.imageLinks?.medium != null) bookDetails.volumeInfo.imageLinks.medium
+        else if (bookDetails.volumeInfo.imageLinks?.small != null) bookDetails.volumeInfo.imageLinks.small
+        else bookDetails.volumeInfo.imageLinks?.thumbnail
 
     val replacedImageUrl = imageUrl?.replace("http", "https")
 
@@ -215,40 +236,40 @@ fun CategoriesCard(bookDetails: BookDetailsItem, modifier: Modifier = Modifier) 
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondary),
         modifier = modifier,
     ) {
-            Text(
-                text = "Categories",
-                fontSize = 18.sp,
-                fontFamily = baskervilleFamily,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
-            )
-            val listOfCategories: List<String>? = bookDetails.volumeInfo.categories
-            if (listOfCategories != null) {
-                for (category in listOfCategories) {
-                    HorizontalDivider(
-                        modifier = Modifier.padding(horizontal = 8.dp),
-                        color = MaterialTheme.colorScheme.onSecondary
-                    )
-                    Text(
-                        text = category,
-                        fontSize = 14.sp,
-                        fontFamily = baskervilleFamily,
-                        color = MaterialTheme.colorScheme.onSecondary,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 2.dp)
-                    )
-                }
-            } else {
+        Text(
+            text = "Categories",
+            fontSize = 18.sp,
+            fontFamily = baskervilleFamily,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+        )
+        val listOfCategories: List<String>? = bookDetails.volumeInfo.categories
+        if (listOfCategories != null) {
+            for (category in listOfCategories) {
                 HorizontalDivider(
                     modifier = Modifier.padding(horizontal = 8.dp),
                     color = MaterialTheme.colorScheme.onSecondary
                 )
                 Text(
-                    "No Categories Found",
+                    text = category,
                     fontSize = 14.sp,
                     fontFamily = baskervilleFamily,
+                    color = MaterialTheme.colorScheme.onSecondary,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 2.dp)
                 )
             }
+        } else {
+            HorizontalDivider(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                color = MaterialTheme.colorScheme.onSecondary
+            )
+            Text(
+                "No Categories Found",
+                fontSize = 14.sp,
+                fontFamily = baskervilleFamily,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 2.dp)
+            )
+        }
     }
 }
 
@@ -274,7 +295,10 @@ fun DescriptionCard(bookDetails: BookDetailsItem) {
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
             Text(
-                text = bookDetails.volumeInfo.description,
+                text = Html.fromHtml(
+                    bookDetails.volumeInfo.description ?: "No Description Found",
+                    Html.FROM_HTML_MODE_COMPACT
+                ).toAnnotatedString(),
                 fontSize = 14.sp,
                 fontFamily = baskervilleFamily,
                 textAlign = TextAlign.Start,
@@ -300,7 +324,8 @@ fun BookAuthorList(bookDetails: BookDetailsItem) {
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
             )
-            for (author in bookDetails.volumeInfo.authors) {
+            val authorList : List<String> = bookDetails.volumeInfo.authors ?: listOf("No Authors Found")
+            for (author in authorList) {
                 HorizontalDivider(
                     modifier = Modifier.padding(horizontal = 4.dp),
                     color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -338,7 +363,7 @@ fun PublishedDateCard(bookDetails: BookDetailsItem, modifier: Modifier = Modifie
             modifier = Modifier.padding(horizontal = 8.dp)
         )
         Text(
-            bookDetails.volumeInfo.publishedDate,
+            text = bookDetails.volumeInfo.publishedDate ?: "No Date Found",
             fontFamily = baskervilleFamily,
             fontSize = 14.sp,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -348,7 +373,7 @@ fun PublishedDateCard(bookDetails: BookDetailsItem, modifier: Modifier = Modifie
 
 @Composable
 fun InfoPill(
-    text: String,
+    text: String?,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -357,8 +382,9 @@ fun InfoPill(
             .clip(RoundedCornerShape(percent = 50))
             .background(color = MaterialTheme.colorScheme.tertiary)
     ) {
+        val infoText : String = text ?: "N/A"
         Text(
-            text = text.trim().lowercase().replace('_', ' '),
+            text = infoText.trim().lowercase().replace('_', ' '),
             fontSize = 20.sp,
             fontFamily = prataFamily,
             fontWeight = FontWeight.Bold,
@@ -370,7 +396,7 @@ fun InfoPill(
 
 @Composable
 fun InfoPillAlt(
-    text: String,
+    text: String?,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -379,8 +405,9 @@ fun InfoPillAlt(
             .clip(RoundedCornerShape(percent = 50))
             .background(color = MaterialTheme.colorScheme.tertiaryContainer)
     ) {
+        val infoText : String = text ?: "N/A"
         Text(
-            text = text,
+            text = infoText.trim().lowercase().replace('_', ' '),
             fontSize = 20.sp,
             fontFamily = prataFamily,
             fontWeight = FontWeight.Bold,
@@ -390,13 +417,43 @@ fun InfoPillAlt(
     }
 }
 
+fun Spanned.toAnnotatedString(): AnnotatedString = buildAnnotatedString {
+    append(this@toAnnotatedString.toString())
+
+    this@toAnnotatedString.getSpans(0, length, Any::class.java).forEach { span ->
+        val start = this@toAnnotatedString.getSpanStart(span)
+        val end = this@toAnnotatedString.getSpanEnd(span)
+
+        when (span) {
+            is StyleSpan -> {
+                when (span.style) {
+                    android.graphics.Typeface.BOLD -> addStyle(SpanStyle(fontWeight = FontWeight.Bold), start, end)
+                    android.graphics.Typeface.ITALIC -> addStyle(SpanStyle(fontStyle = FontStyle.Italic), start, end)
+                }
+            }
+            is UnderlineSpan -> addStyle(SpanStyle(textDecoration = TextDecoration.Underline), start, end)
+            is StrikethroughSpan -> addStyle(SpanStyle(textDecoration = TextDecoration.LineThrough), start, end)
+            is ForegroundColorSpan -> addStyle(SpanStyle(color = Color(span.foregroundColor)), start, end)
+            is BackgroundColorSpan -> addStyle(SpanStyle(background = Color(span.backgroundColor)), start, end)
+            is RelativeSizeSpan -> addStyle(SpanStyle(fontSize = span.sizeChange.em), start, end)
+            is URLSpan -> {
+                // You might need to handle this differently, e.g., using a custom annotation
+                addStringAnnotation(tag = "URL", annotation = span.url, start = start, end = end)
+                addStyle(SpanStyle(textDecoration = TextDecoration.Underline, color = Color.Blue), start, end)
+            }
+            // Add other span types as needed
+        }
+    }
+}
+
 @Composable
 fun BookDetailsScreen(
-    detailsScreenUiState: DetailsScreenUiState
+    detailsScreenUiState: DetailsScreenUiState,
+    retryAction : () -> Unit,
 ) {
     when (detailsScreenUiState) {
         is DetailsScreenUiState.Loading -> LoadingScreen()
-        is DetailsScreenUiState.Error -> ErrorScreen({}, detailsScreenUiState.errorMessage)
+        is DetailsScreenUiState.Error -> ErrorScreen(retryAction, detailsScreenUiState.errorMessage)
         is DetailsScreenUiState.Success -> BookDetailsLayout(
             bookDetails = detailsScreenUiState.bookDetails
         )

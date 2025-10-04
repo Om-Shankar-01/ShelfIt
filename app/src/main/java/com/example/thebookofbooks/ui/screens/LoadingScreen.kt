@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.example.thebookofbooks.R
 import com.example.thebookofbooks.ui.theme.TheBookOfBooksTheme
 import com.example.thebookofbooks.ui.theme.oswaldFamily
+import com.example.thebookofbooks.ui.theme.prataFamily
 import com.example.thebookofbooks.ui.theme.sabonFamily
 
 @Composable
@@ -41,9 +42,10 @@ fun LoadingScreen (
             Spacer(modifier = Modifier.height(20.dp))
             Text(
                 text = stringResource(id = R.string.loading_screen_heading_text),
-                fontFamily = oswaldFamily,
+                fontFamily = prataFamily,
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 48.sp,
+                lineHeight = 48.sp,
+                fontSize = 44.sp,
                 textAlign = TextAlign.Justify
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -52,7 +54,8 @@ fun LoadingScreen (
                 fontFamily = sabonFamily,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.75f),
-                textAlign = TextAlign.Left
+                textAlign = TextAlign.Left,
+                modifier = Modifier.padding(start = 2.dp)
             )
         }
     }

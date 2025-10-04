@@ -3,7 +3,7 @@
     <string name="loading_screen_heading_text">Hold Tight…</string>
     <string name="loading_screen_subheading_text">Please wait.\nWe are fetching your results…</string>
     <string name="warning_icon_desc">Warning</string>
-    <string name="error_screen_heading_text">Hmm… \nThere seems to an error</string>
+    <string name="error_screen_heading_text">Hmm… \nThere seems to be an error</string>
     <string name="error_screen_subheading_text">Try turning off Airplane Mode or Check your Internet Connection.</string>
     <string name="error_screen_retry_button">Retry</string>
     <string name="search_button_label">Search</string>
