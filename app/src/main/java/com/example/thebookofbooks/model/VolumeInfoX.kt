@@ -2,6 +2,7 @@ package com.example.thebookofbooks.model
 
 data class VolumeInfoX(
     val allowAnonLogging: Boolean,
+    val averageRating: Double?,
     val authors: List<String>?,
     val canonicalVolumeLink: String,
     val categories: List<String>?,

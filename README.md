@@ -1,10 +1,34 @@
-# ShelfIt
+# ShelfIt 
 
-**ShelfIt** is an Android application for discovering and browsing books, powered by the Google Books API. 
+*An Android application for discovering and browsing books, powered by the Google Books API.*
 
 It provides a clean and intuitive interface for users to search for any book and view its details. The app is designed with a focus on solid architecture and a smooth user experience.
 
----
+## Screenshots
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="/screenshots/screenshot_1.jpg" alt="Main search screen" width="300"/>
+      <br />
+      <sub><b>Main Search Screen</b></sub>
+    </td>
+    <td align="center">
+      <img src="/screenshots/screenshot_2.jpg" alt="Results screen" width="300"/>
+      <br />
+      <sub><b>Results Screen</b></sub>
+    </td>
+    <td align="center">
+      <img src="/screenshots/screenshot_3.jpg" alt="Book details screen" width="300"/>
+      <br />
+      <sub><b>Book Details Screen</b></sub>
+    </td>
+    <td align="center">
+      <img src="/screenshots/screenshot_4.jpg" alt="Book details screen" width="300"/>
+      <br />
+      <sub><b>Book Details Screen</b></sub>
+    </td>
+  </tr>
+</table>
 
 ## Features
 
@@ -14,7 +38,6 @@ It provides a clean and intuitive interface for users to search for any book and
 - **Dynamic UI**: Fully built with Jetpack Compose, offering a modern and reactive user experience.  
 - **State Handling**: Gracefully manages loading, error, and empty search result states to keep the user informed.  
 
----
 
 ## Architecture & Tech Stack
 
@@ -26,7 +49,6 @@ ShelfIt follows the **MVVM (Model-View-ViewModel)** architecture pattern for a c
 - **Dependency Injection**: Manual DI approach via an `AppContainer`.  
 - **Image Loading**: Coil for efficient image loading and caching in Compose.  
 
----
 
 ## Installation Guide
 
@@ -63,4 +85,3 @@ The project is set up to automatically read this key.
 
 Sync the Gradle files and run the app on an Android Emulator or a physical device.
 
----

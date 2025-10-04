@@ -10,7 +10,6 @@ import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
 import android.text.style.URLSpan
 import android.text.style.UnderlineSpan
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,6 +17,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,9 +27,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -69,6 +73,7 @@ import com.example.thebookofbooks.ui.DetailsScreenUiState
 import com.example.thebookofbooks.ui.theme.TheBookOfBooksTheme
 import com.example.thebookofbooks.ui.theme.baskervilleFamily
 import com.example.thebookofbooks.ui.theme.prataFamily
+import kotlin.math.roundToInt
 
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
@@ -111,6 +116,7 @@ fun BookDetailsTabletLayout(bookDetails: BookDetailsItem) {
                 PublishedDateCard(bookDetails, modifier = Modifier.weight(1f))
                 InfoPill(text = "${bookDetails.volumeInfo.printedPageCount} pages")
             }
+            StarRating(rating = bookDetails.volumeInfo.averageRating ?: 0.0)
         }
 
         LazyColumn(
@@ -181,6 +187,10 @@ fun BookDetailsPortraitLayout(bookDetails: BookDetailsItem) {
                     bookDetails.volumeInfo.maturityRating,
                 )
             }
+        }
+        item {
+            val rating : Double = bookDetails.volumeInfo.averageRating ?: 0.0
+            StarRating(rating = rating)
         }
     }
 
@@ -417,6 +427,52 @@ fun InfoPillAlt(
     }
 }
 
+@Composable
+fun StarRating(
+    rating: Double,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier
+            .clip(RoundedCornerShape(percent = 50))
+            .background(color = MaterialTheme.colorScheme.secondary)
+            .padding(vertical = 4.dp)
+            .fillMaxWidth()
+    ) {
+        Column(
+            modifier = modifier,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row {
+                val filledStars = rating.roundToInt()
+                repeat(filledStars) {
+                    Icon(
+                        imageVector = Icons.Filled.Star,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSecondary
+                    )
+                }
+                repeat(5 - filledStars) {
+                    Icon(
+                        imageVector = Icons.Outlined.Star,
+                        contentDescription = null,
+                        tint = Color.Gray
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "Rating: $rating / 5",
+                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = baskervilleFamily,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSecondary
+            )
+        }
+    }
+}
+
 fun Spanned.toAnnotatedString(): AnnotatedString = buildAnnotatedString {
     append(this@toAnnotatedString.toString())
 
@@ -495,6 +551,7 @@ val sampleBookItem = BookDetailsItem(
         dimensions = Dimensions("69", "69", "69"),
         maturityRating = "Adult",
         printedPageCount = 56,
+        averageRating = 3.5,
         readingModes = ReadingModes(text = true, image = true)
     ),
     kind = "Physical Book"
