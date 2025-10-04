@@ -2,7 +2,7 @@
 
 *An Android application for discovering and browsing books, powered by the Google Books API.*
 
-It provides a clean and intuitive interface for users to search for any book and view its details. The app is designed with a focus on solid architecture and a smooth user experience.
+It provides a clean and intuitive interface for users to search for any book and view its details like page count, average rating, authors, language and more. The app is designed with a focus on solid architecture and a smooth user experience.
 
 ## Screenshots
 <table align="center">
