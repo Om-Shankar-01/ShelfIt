@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
@@ -37,7 +38,7 @@ import com.example.thebookofbooks.ui.screens.BooksStartScreen
 import com.example.thebookofbooks.ui.screens.ResultsScreen
 import com.example.thebookofbooks.ui.theme.baskervilleFamily
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun BooksApp(
     navController: NavHostController = rememberNavController()

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,6 +17,7 @@ import com.example.thebookofbooks.ui.theme.TheBookOfBooksTheme
 import com.example.thebookofbooks.ui.theme.baskervilleFamily
 import com.example.thebookofbooks.ui.theme.prataFamily
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun EmptyScreen(
     retryAction: () -> Unit,

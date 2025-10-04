@@ -7,6 +7,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.CircularWavyProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +27,7 @@ import com.example.thebookofbooks.ui.theme.oswaldFamily
 import com.example.thebookofbooks.ui.theme.prataFamily
 import com.example.thebookofbooks.ui.theme.sabonFamily
 
+@ExperimentalMaterial3ExpressiveApi
 @Composable
 fun LoadingScreen (
     modifier: Modifier = Modifier
@@ -36,7 +40,7 @@ fun LoadingScreen (
             .padding(horizontal = 32.dp)
     ) {
         item {
-            CircularProgressIndicator(
+            LoadingIndicator(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Spacer(modifier = Modifier.height(20.dp))
@@ -61,6 +65,7 @@ fun LoadingScreen (
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Preview(showBackground = true)
 @Composable
 fun LoadingScreenPreview () {

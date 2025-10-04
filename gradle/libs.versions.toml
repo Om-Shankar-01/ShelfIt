@@ -8,11 +8,13 @@ espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.6"
 activityCompose = "1.9.3"
 composeBom = "2024.04.01"
+material3Version = "1.5.0-alpha01"
 navigationRuntimeKtx = "2.8.5"
 navigationCompose = "2.8.5"
 material3 = "1.4.0"
 
 [libraries]
+androidx-compose-material3-v150alpha01 = { module = "androidx.compose.material3:material3", version.ref = "material3Version" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

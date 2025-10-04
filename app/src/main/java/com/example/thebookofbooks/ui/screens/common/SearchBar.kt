@@ -6,6 +6,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import com.example.thebookofbooks.R
 import com.example.thebookofbooks.ui.theme.baskervilleFamily
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun SearchBar (
     query : String,
@@ -38,7 +40,7 @@ fun SearchBar (
                 fontWeight = FontWeight.Bold
             )
         },
-        shape = RoundedCornerShape(percent = 33),
+        shape = RoundedCornerShape(percent = 50),
         singleLine = true,
         leadingIcon = {
             FilledIconButton(
