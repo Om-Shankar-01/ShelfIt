@@ -1,53 +1,66 @@
 # ShelfIt
-ShelfIt App is a simple Android application built using **Jetpack Compose** and the **Google Books API**.  
 
-It allows users to search for books by entering a query term and displays the results in an interactive grid layout with thumbnails. Users can tap on a book to view its details.
+**ShelfIt** is an Android application for discovering and browsing books, powered by the Google Books API. 
+
+It provides a clean and intuitive interface for users to search for any book and view its details. The app is designed with a focus on solid architecture and a smooth user experience.
+
+---
 
 ## Features
-•	**Search Functionality**: Type in a query to search for books using the Google Books API.  
-•	**Dynamic Results**: Displays search results as a grid with thumbnail images fetched dynamically.  
-•	**Book Details**: View more information about a book, such as title, author, and description.  
 
+- **Book Search**: Search for books by title, author, or any keyword.  
+- **Results Display**: View search results in a clean, scrollable list with book thumbnails.  
+- **Detailed View**: Get comprehensive details for any book, including its description, authors, publisher, ratings, and more.  
+- **Dynamic UI**: Fully built with Jetpack Compose, offering a modern and reactive user experience.  
+- **State Handling**: Gracefully manages loading, error, and empty search result states to keep the user informed.  
 
-## Installation
-> Follow these steps to set up and run the Bookshelf App on your local machine:
+---
 
-1. **Clone the Repository**  
-   Open your terminal and run the following command to clone the repository:  
-   ```bash
-   git clone https://github.com/{yourusername}/bookshelf-app.git  
-   ```
-2.	**Open in Android Studio**  
-	•	Launch Android Studio.  
-	•	Open the cloned project by selecting File > Open and navigating to the project folder.  
+## Architecture & Tech Stack
 
-3.	**Add Your Google Books API Key**  
-	•	Obtain your API key from the Google Books API Console.  
-	•	Open the gradle.properties file in the project.  
-	•	Add the following line, replacing your_api_key_here with your actual API key:  
-    ```
-    apiKey = your_api_key_here
-    ```
+ShelfIt follows the **MVVM (Model-View-ViewModel)** architecture pattern for a clean separation of concerns and scalability.  
 
-4.	**Sync the Project**  
-	•	In Android Studio, click on File > Sync Project with Gradle Files to download dependencies.
+- **UI Layer**: Built entirely with Jetpack Compose for a declarative, modern UI.  
+- **Networking**: Retrofit + OkHttp for efficient network requests to the Google Books API.  
+- **Asynchronous Operations**: Kotlin Coroutines for smooth background thread management.  
+- **Dependency Injection**: Manual DI approach via an `AppContainer`.  
+- **Image Loading**: Coil for efficient image loading and caching in Compose.  
 
-5.	**Run the App**  
-	•	Connect your physical Android device or start an emulator.  
-	•	Click the green Run button in Android Studio to build and launch the app.
+---
 
+## Installation Guide
 
-## Key Components
-1.	UI Layer  
-	•	Built using Jetpack Compose.  
-	•	Features composables for search, grid layout, and book details.  
+Follow these steps to build and run the app locally:
 
-2.	ViewModel  
-	•	Handles user interactions and business logic.  
-	•	Fetches data from the repository and exposes state to the UI using StateFlow.
+### 1. Clone the repository
+```bash
+git clone https://github.com/your-username/ShelfIt.git
+```
 
-3.	Repository  
-	•	Manages data operations, including network requests to the Google Books API.  
-    
-4.	API Integration  
-	•	Uses Retrofit for API calls to fetch book data and details.
+### 2. Open in Android Studio
+
+Open the cloned repository in the latest stable version of **Android Studio**.
+
+### 3. Get a Google Books API Key
+
+This project requires a Google Books API key. You can obtain one from the [Google Cloud Console](https://console.cloud.google.com/).
+
+* Create a new project.
+* Go to **APIs & Services > Library** and enable the **Google Books API**.
+* Go to **APIs & Services > Credentials** and create a new API key.
+
+### 4. Add the API Key
+
+Create a `local.properties` file in the root of the project (if it doesn't already exist) and add your key:
+
+```properties
+BOOKS_API_KEY="YOUR_API_KEY"
+```
+
+The project is set up to automatically read this key.
+
+### 5. Build and Run
+
+Sync the Gradle files and run the app on an Android Emulator or a physical device.
+
+---
